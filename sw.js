@@ -1,4 +1,4 @@
-const CACHE_NAME = 'la-butterflies-v1';
+const CACHE_NAME = 'la-butterflies-v7';
 
 // Core assets to cache for offline use
 const CORE_ASSETS = [

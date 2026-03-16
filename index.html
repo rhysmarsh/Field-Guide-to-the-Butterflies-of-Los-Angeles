@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="LA Butterflies">
-  <meta name="theme-color" content="#1A3C35">
+  <meta name="theme-color" content="#2a2a1e">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="application-name" content="LA Butterflies">
   <title>Butterflies of Los Angeles County — Field Guide</title>
@@ -25,17 +25,16 @@
   <meta name="apple-mobile-web-app-orientations" content="portrait-any">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{height:100%}body{height:100%;font-family:'EB Garamond',Georgia,serif;-webkit-font-smoothing:antialiased;overflow:hidden;background:#2a2a1e}
-    #root{height:100%;overflow:auto}
+    html{height:100%}body{min-height:100%;font-family:'EB Garamond',Georgia,serif;-webkit-font-smoothing:antialiased;background:#eee8d8}
+    #root{min-height:100%}
     @media(pointer:coarse){button,select,input{min-height:40px}textarea{min-height:80px}}
     ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#f5f0e6}::-webkit-scrollbar-thumb{background:#c0b8a0;border-radius:3px}
-    @supports(padding-top:env(safe-area-inset-top)){body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}}
     button,a{-webkit-tap-highlight-color:transparent}
     select{-webkit-appearance:none;appearance:none;background-repeat:no-repeat;background-position:right 8px center;padding-right:24px!important}
     img{max-width:100%}
     /* PWA install prompt styling */
-    .pwa-install-banner{position:fixed;bottom:env(safe-area-inset-bottom,0);left:0;right:0;background:linear-gradient(135deg,#1A3C35,#2a5a48);color:#f0ead6;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:999;font-family:'EB Garamond',Georgia,serif;box-shadow:0 -4px 20px rgba(0,0,0,0.3);transform:translateY(100%);transition:transform 0.4s ease}
-    .pwa-install-banner.show{transform:translateY(0)}
+    .pwa-install-banner{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1A3C35,#2a5a48);color:#f0ead6;padding:14px 20px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));display:none;align-items:center;justify-content:space-between;gap:12px;z-index:999;font-family:'EB Garamond',Georgia,serif;box-shadow:0 -4px 20px rgba(0,0,0,0.3)}
+    .pwa-install-banner.show{display:flex}
     .pwa-install-banner button{font-family:'EB Garamond',Georgia,serif;border:none;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer}
     .pwa-install-btn{background:#D4A843;color:#1A3C35}
     .pwa-dismiss-btn{background:transparent;color:#a0c0a0;text-decoration:underline}
@@ -279,8 +278,6 @@ const BUTTERFLIES = [
   B(136,"Mexican Fritillary","Euptoieta hegesia","nymphalidae","vagrant","2.0–2.5″","Jul–Nov","Passion vine, violets, turnera","Open areas, desert scrub edges",[4],"VAGRANT. Tropical species straying north in late summer. Resembles Variegated Fritillary but brighter orange-tawny with fewer dark markings. Extremely rare."),
   B(137,"Common Mestra","Mestra amymone","nymphalidae","vagrant","1.3–1.8″","Jul–Nov","Noseburn (Tragia)","Open brushy areas, washes",[4],"VAGRANT. Pale gray-white with orange trailing edge. Desert origin, strays into Antelope Valley in warm years. Also called 'White Mestra.'"),
   B(138,"Red-spotted Purple","Limenitis arthemis astyanax","nymphalidae","vagrant","2.5–3.5″","May–Sep","Willows, cottonwood, cherry","Woodland edges, riparian corridors",[1],"VAGRANT. Blue-black with iridescent blue and red-orange spots ventrally. Extremely rare stray; more common much further north and east."),
-  B(139,"Empress Leilia","Asterocampa leilia","nymphalidae","vagrant","1.8–2.5″","May–Oct","Desert hackberry (Celtis ehrenbergiana)","Desert riparian areas with hackberry",[4],"VAGRANT. Pale gray-brown emperor butterfly. Occasionally reaches Antelope Valley from desert populations in Arizona. Rarely confirmed in county."),
-  B(140,"Hackberry Emperor","Asterocampa celtis","nymphalidae","vagrant","1.5–2.3″","May–Sep","Hackberry (Celtis spp.)","Riparian woodland, parks",[5],"VAGRANT. Warm brown with dark eyespots and white forewing spots. Very rare; confirmed only a handful of times in county history."),
 
   // Hesperiidae
   B(141,"White Checkered-Skipper","Burnsius albescens","hesperiidae","uncommon","0.75–1.2″","Feb–Oct","Mallows (Malvaceae)","Open disturbed areas, gardens",[0,2,3,5,6],"Recently split from Common Checkered-Skipper. Whiter overall with less distinct markings. More common in drier, southern areas. Taxonomy still debated."),
@@ -292,6 +289,18 @@ const BUTTERFLIES = [
   B(147,"Mojave Sootywing","Hesperopsis libya","hesperiidae","rare","0.8–1.1″","Apr–Oct","Saltbush (Atriplex spp.)","Alkali scrub, desert wash edges",[4],"Dark brown-black skipper of desert salt-scrub. Localized in Antelope Valley where saltbush flats persist. Multiple broods."),
   B(148,"Lindsey's Skipper","Hesperia lindseyi","hesperiidae","rare","1.0–1.3″","May–Jul","Native grasses","Foothill grasslands, chaparral clearings",[0,1,5],"Orange skipper with crisp ventral markings. One spring brood. Localized in foothill grasslands. Named for entomologist A.W. Lindsey."),
 ];
+
+// Subspecies relationships: parent → [children]
+// Children are hidden by default, shown when parent is expanded
+const SUBSPECIES = {
+  71: [84],   // Common Buckeye → Dark Form
+  73: [74],   // Edith's Checkerspot → Quino Checkerspot (E. e. quino)
+  43: [45],   // Silvery Blue → Palos Verdes Blue (G. l. palosverdesensis)
+  115: [117], // Mormon Metalmark → Lange's Metalmark (A. m. langei)
+};
+const CHILD_IDS = new Set(Object.values(SUBSPECIES).flat());
+const PARENT_OF = {};
+Object.entries(SUBSPECIES).forEach(([p, kids]) => kids.forEach(k => { PARENT_OF[k] = parseInt(p); }));
 
 // Real LA County cartography - coordinates from Census/GeoJSON data
 const LA_BOUNDS = { minLng: -118.96, maxLng: -117.62, minLat: 33.68, maxLat: 34.84 };
@@ -486,7 +495,7 @@ function RangeMap({ species }) {
 }
 
 // Field mark identification text per species
-const FIELD_MARKS = {1:"Deep yellow ground; narrow black tiger stripes; blue+orange lunules near tail; broad hindwing",2:"Cream-WHITE ground (not yellow); THICKER black stripes than Tiger; blue+orange lunules near tail",3:"Black with yellow spots in rows; orange+blue eyespot near short tail; anise/fennel host",4:"Iridescent blue on black hindwings above; row of orange spots below; NO tails; pipevine host",5:"Black with yellow diagonal band across wings; very large; breeds on citrus and rue",6:"Short tails; dark with cream-yellow bands; compact body; smallest NA swallowtail",7:"Like W. Tiger but TWO tails per hindwing; slightly larger; mountain canyons",8:"White above; 1-2 small black forewing spots; veins GREEN below; very common garden species",9:"White with crisp dark checkered margins; heavier pattern than Cabbage White",10:"White above; MARBLED GREEN below; flies early spring (Feb-Apr); male yellow-tipped antennae",11:"White above; BOLD green veining below; desert and arid washes; larger than Sara",12:"Large; uniform bright LEMON yellow; no markings above; cell spot below; tropical stray",13:"Orange above with wide BLACK border; yellow below with silver cell spot; common garden visitor",14:"Yellow with clean black border; smaller than Cloudless; pink-edged cell spot below",15:"Black pattern forms DOG FACE profile on yellow forewing; pink-edged below; state butterfly",16:"White; male has vivid ORANGE wingtips; green marbling below; early spring chaparral",17:"White; YELLOW-orange wingtips; desert species; Sara Orangetip relative",18:"Tiny (3/4 in.); pale yellow; dark forewing bar; black-tipped antennae; weedy areas",19:"Bright orange above; WINTER form dark brown below with silver spots; multivoltine",20:"Yellow; faint dog-face pattern; Mountain Yellow = high elevation form",21:"Pointed forewing; dog-face pattern; DESERT specialist; Southern Dogface",22:"Deep orange; large; rare tropical stray; LACKS black border of Cloudless",23:"Bright yellow; strong black borders; mountain meadows; related to Cloudless",24:"White with HEAVY black veining above; pine/fir canopy; mountain species",25:"White; HEAVY green marbling below; pearly iridescence; uncommon",26:"Gray above; thin hair-like tail; bright ORANGE cap over blue eyespot at tail",27:"Warm brown; thin white postmedian LINE below; no orange on tail; oaks",28:"Brown; ORANGE lunules near thin tail below; larger than Gray Hairstreak",29:"Golden-brown with fine tails; OAK specialist; uncommon foothill species",30:"Gray-brown; reduced markings below; NO orange at tail; quiet habits",31:"Males stunning IRIDESCENT BLUE-PURPLE above; females brown; oak-mistletoe host",32:"Dark reddish-brown; NO tail; flies very early spring (Feb-Mar); Ceanothus host",33:"Dark chocolate-brown; NO tail; Dudleya (stonecrop) specialist; rare",34:"Dark above; brilliant EMERALD GREEN underside; mountain chaparral; Ceanothus host",35:"Dark blue-purple above; mistletoe specialist; no tail; uncommon",36:"Tiny (under 1/2 in.); SMALLEST butterfly in N. America; coastal salt flats",37:"Brown+white STRIPED pattern below; common in gardens; marine influence area",38:"Pale blue; unique small TAIL (rare in blues); mountain elevations; single-brooded",39:"Pale silvery-blue; early spring (Mar-Apr); ventral spots small+faint; Ceanothus host",40:"Pale blue; CRISP round dark spots on clean white below; flies early spring",41:"Blue above (males); orange+IRIDESCENT BLUE band on hindwing margin; multibro; buckwheat host",42:"Like Acmon but SINGLE-BROODED; brighter blue males; black inner edge on orange lunules above",43:"Silvery-blue above; gray ground below with round black spots; NO orange band (unlike Acmon)",44:"ENDANGERED; tiny blue; ONLY at LAX dunes area; Seacliff buckwheat host",45:"ENDANGERED; silvery-blue; ONLY Palos Verdes Peninsula; locoweed host",46:"Blue above; SQUARED orange spots in marginal band; buckwheat host",47:"Bright blue; higher mountain elevations; related to Acmon complex",48:"Small; blue male / brown female; orange submarginal spots; dotted-blue group",49:"Dark postmedian forewing spots diagnostic; Reakirt's Blue; irruptive migrant",50:"Yellow-brown; dark spots; ENDEMIC to San Emigdio area; buckwheat host",51:"Males PURPLISH above (unusual for copper); orange zigzag below; dock/sorrel host",52:"Large; males dark PURPLE above; females orange with dark spots; uncommon foothill",53:"Males brilliant iridescent BLUE above; unique among coppers; buckwheat host; ENDANGERED",54:"Orange-brown with white spots; edged-copper pattern; rare vagrant",55:"Tiny; brilliant cerulean blue above; orange aurora below; sonoran influence",56:"Orange with BLACK veins; white dots in black border; ICONIC migrant; milkweed host",57:"Dark MAHOGANY-brown (not orange); white spots; NO black veining; milkweed host",58:"Bright orange above; SILVER-washed underside; long narrow wings; passion vine host",59:"Tawny-orange above; mottled brown-tan below with NO silver; violet host",60:"Orange-black; WHITE bar on forewing; 4 SMALL eyespots on ventral hindwing; cosmopolitan migrant",61:"ORANGE bar on forewing (not white); cobwebbed ventral HW; NO large eyespots below; mallow host",62:"Dark black; bold RED-ORANGE + white bands; strongly banded; nettle host; territorial",63:"2 LARGE eyespots on ventral hindwing; small white dot in orange forewing field; everlasting host",64:"Dark MAROON-purple; cream-yellow marginal border; MOURNING CLOAK; overwintering adult",65:"Brilliant uniform ORANGE; irruptive; sometimes abundant, other years absent; elm host",66:"Dark above; narrow orange submarginal band; California Tortoiseshell; Ceanothus host; irruptive",67:"Ragged irregular wing edges; silver COMMA or L-mark on ventral hindwing; woodland",68:"Like Satyr Comma but DARKER; hoary gray-frosted ventral HW; mountain; Ribes host",69:"Black above; ORANGE band + white spots on forewing; California Sister; live oak host",70:"Black; bold white median band; ORANGE forewing tips; Lorquin's Admiral; willow host",71:"Brown; FOUR large colorful EYESPOTS (2 per wing); multicolored; open weedy areas",72:"Variable mosaic of black+red+yellow; crescents/checks; highly variable; paintbrush host",73:"Red+black checkerboard; very LOCAL colonies; specific hillsides; plantain host",74:"ENDANGERED; bold red-black-white checkerboard; local colonies on specific ridges",75:"Red-orange + black checks; SAGE SCRUB habitat; Indian paintbrush host",76:"Dark ground; pale cream bands; dark checkerspots; paintbrush host; mountain",77:"Orange; complex fine black reticulated pattern; larger than other checkerspots",78:"VERY SMALL (3/4 in.); fine black lines on orange; desert; dwarf plantain host",79:"Small orange-black checks; on thistles in disturbed areas; Mylitta Crescent",80:"Delicate orange-black pattern; desert washes; short flight period",81:"Soft tawny-brown; SINGLE small forewing eyespot; grassland edges; bouncing flight",82:"Brown; TWO prominent forewing eyespots; grass-feeding; Common Wood-Nymph",83:"Smaller than Common; ONE forewing eyespot; mountain meadows above 5000ft",84:"Same as Common Buckeye; dark seasonal/regional form; reddish-brown late season",85:"Pale gray-brown; SMALL eyespots; hackberry specialist; vagrant to LA",86:"Warm brown; dark eyespots on FW; white apical spots; hackberry host; vagrant",87:"Pale straw-cream; bouncing low flight over grasslands; eyespots tiny or absent",88:"EXTIRPATED from LA; unsilvered (tan) spots below; distinguished from other Speyeria",89:"Large fritillary; prominent SILVER spots on green-brown ventral HW; violet host; historical",90:"SMALLEST Speyeria fritillary; single summer brood; silver-spotted below; mountain",91:"Dark brown; more BANDING pattern than Common Buckeye; tropical stray",93:"Males bright ORANGE-GOLD above; dark female with pale spots; common on LAWNS; grass host",94:"Dark brown with orange patches; SHADE-loving; Eufala Skipper; grass host",95:"Dark brown; WHITE hindwing fringe (KEY mark); narrow pointed FW; legume host",96:"Dark brown; white HW fringe BUT with brown bases; GRAY overscaling on FW; OAK host",97:"LARGEST duskywing; heavily MOTTLED FW (tan+dark brown contrast); BROWN fringe; spring; oak host",98:"Very dark males; gray overscaling on FW; Ceanothus host; smaller than Propertius",99:"Gray-brown; pale-tipped fringe (NOT white); smaller than Funereal; legume host",100:"Black-white CHECKERED pattern; hairy body; common in disturbed areas; mallow host",101:"Like Common Checkered but predominantly WHITE; drier habitats; mallow host",102:"Nearly black; TINY white spots; compact body; Common Sootywing; amaranth host",103:"Brown; SALT MARSH specialist; Wandering Skipper; saltgrass host; coastal only",104:"Warm orange-brown; LATE season (Aug-Oct); Woodland Skipper; grass host",105:"Bright orange; EARLIER season than Woodland; smaller; Umber Skipper relative",106:"Variable tawny; JAGGED dark ventral chevrons; Sandhill Skipper",107:"Large orange-gold male; dark brown STIGMA patch on male forewing; grass host; Sachem",108:"Gray-brown; small WHITE forewing spots; Columella/Common Sootywing relative",109:"Orange; SPRING only (one brood); mountain meadow; Juba Skipper",110:"Large orange; GREEN-tinged hindwing below; Rural Skipper; one brood",111:"Dark brown; FAINT translucent white FW spots; fast erratic flight; Northern Cloudywing",112:"Like N. Cloudywing but SMALLER hyaline FW spots; Southern Cloudywing",113:"Large; bold SILVER patch on ventral hindwing; Silver-spotted Skipper; legume host",114:"Iridescent blue-green body; LONG tail streamers on hindwing; legume host",115:"Dark+white checkered; orange below; FALL flier; Erichson's Skipper; desert",116:"Orange-brown with black spots; MESQUITE specialist; desert skipper",117:"HISTORIC; dune habitat form; Los Angeles area; habitat now developed",118:"Tiny dark brown; METALLIC silver lines on ventral HW; Wright's Metalmark",119:"Very small; dark; METALLIC silver lines; Mormon Metalmark; buckwheat host",120:"Tailless; black with rows of yellow spots; tropical vagrant from Mexico",121:"Black; extensive blue on hindwing above (more than Anise); vagrant from Mexico/desert",122:"Heavier green marbling than Sara Orangetip; desert vagrant",123:"Orange; pointed hindwing TAIL; tropical vagrant; Tailed-Orange",124:"Small bright yellow; rounded wings; desert vagrant from Baja; Dainty Sulphur relative",125:"White; orange tips; mountain; larger wingtips than Sara Orangetip",126:"Tiny gray; orange dorsal patches; desert pygmy-blue relative",127:"EXTIRPATED; among smallest blues in N. America; coastal habitat lost",128:"EXTIRPATED from LA; coastal dune blue; closest relative to extinct Xerces Blue",129:"Blue; orange submarginal band; desert vagrant; buckwheat host",130:"Dark above; GREEN mottled below; desert rocky slopes; Nais Metalmark",131:"Reddish-brown; incense cedar specialist; Brown Elfin relative; mountain",132:"Elongated SNOUT-like palps; brown+orange; irruptive migrant; hackberry host",133:"EXTIRPATED; medium fritillary with silver spots; lost from LA mountains",134:"HISTORIC; questionable old LA County records; Great Spangled type",135:"HISTORIC; silver and gold ventral spots; no confirmed LA specimens",136:"Brighter orange than Painted Lady; tropical vagrant; Mexican Fritillary",137:"Pale gray-white above; orange trailing HW edge; tropical vagrant",138:"Blue-black iridescent above; ventral red spots on black; tropical vagrant; rare",139:"Pale gray-brown; small eyespots; Empress Leilia; hackberry host; vagrant",140:"Warm brown; white FW spots; dark eyespots; Hackberry Emperor; very rare vagrant",141:"WHITER pattern than Common Checkered-Skipper; tropical influence; vagrant",142:"Brown; LONG streamer tails; NOT iridescent (unlike Great Purple)",143:"Orange-brown; POWDERY gray scaling on ventral HW; vagrant from desert",144:"Like Funereal but LACKS white HW fringe; dark throughout; Zarucco relative",145:"EXTIRPATED; lupine specialist; dark with white spots; Persius Duskywing",146:"HISTORIC; massive skipper (2+ in.); yucca borer larva; Giant-Skipper",147:"Dark brown; SALT-SCRUB specialist; coastal sage scrub; very local",148:"Orange; CRISP clean ventral chevrons; foothill chaparral; one brood; Lindsey's Skipper"};
+const FIELD_MARKS = {1:"Deep yellow ground; narrow black tiger stripes; blue+orange lunules near tail; broad hindwing",2:"Cream-WHITE ground (not yellow); THICKER black stripes than Tiger; blue+orange lunules near tail",3:"Black with yellow spots in rows; orange+blue eyespot near short tail; anise/fennel host",4:"Iridescent blue on black hindwings above; row of orange spots below; NO tails; pipevine host",5:"Black with yellow diagonal band across wings; very large; breeds on citrus and rue",6:"Short tails; dark with cream-yellow bands; compact body; smallest NA swallowtail",7:"Like W. Tiger but TWO tails per hindwing; slightly larger; mountain canyons",8:"White above; 1-2 small black forewing spots; veins GREEN below; very common garden species",9:"White with crisp dark checkered margins; heavier pattern than Cabbage White",10:"White above; MARBLED GREEN below; flies early spring (Feb-Apr); male yellow-tipped antennae",11:"White above; BOLD green veining below; desert and arid washes; larger than Sara",12:"Large; uniform bright LEMON yellow; no markings above; cell spot below; tropical stray",13:"Orange above with wide BLACK border; yellow below with silver cell spot; common garden visitor",14:"Yellow with clean black border; smaller than Cloudless; pink-edged cell spot below",15:"Black pattern forms DOG FACE profile on yellow forewing; pink-edged below; state butterfly",16:"White; male has vivid ORANGE wingtips; green marbling below; early spring chaparral",17:"White; YELLOW-orange wingtips; desert species; Sara Orangetip relative",18:"Tiny (3/4 in.); pale yellow; dark forewing bar; black-tipped antennae; weedy areas",19:"Bright orange above; WINTER form dark brown below with silver spots; multivoltine",20:"Yellow; faint dog-face pattern; Mountain Yellow = high elevation form",21:"Pointed forewing; dog-face pattern; DESERT specialist; Southern Dogface",22:"Deep orange; large; rare tropical stray; LACKS black border of Cloudless",23:"Bright yellow; strong black borders; mountain meadows; related to Cloudless",24:"White with HEAVY black veining above; pine/fir canopy; mountain species",25:"White; HEAVY green marbling below; pearly iridescence; uncommon",26:"Gray above; thin hair-like tail; bright ORANGE cap over blue eyespot at tail",27:"Warm brown; thin white postmedian LINE below; no orange on tail; oaks",28:"Brown; ORANGE lunules near thin tail below; larger than Gray Hairstreak",29:"Golden-brown with fine tails; OAK specialist; uncommon foothill species",30:"Gray-brown; reduced markings below; NO orange at tail; quiet habits",31:"Males stunning IRIDESCENT BLUE-PURPLE above; females brown; oak-mistletoe host",32:"Dark reddish-brown; NO tail; flies very early spring (Feb-Mar); Ceanothus host",33:"Dark chocolate-brown; NO tail; Dudleya (stonecrop) specialist; rare",34:"Dark above; brilliant EMERALD GREEN underside; mountain chaparral; Ceanothus host",35:"Dark blue-purple above; mistletoe specialist; no tail; uncommon",36:"Tiny (under 1/2 in.); SMALLEST butterfly in N. America; coastal salt flats",37:"Brown+white STRIPED pattern below; common in gardens; marine influence area",38:"Pale blue; unique small TAIL (rare in blues); mountain elevations; single-brooded",39:"Pale silvery-blue; early spring (Mar-Apr); ventral spots small+faint; Ceanothus host",40:"Pale blue; CRISP round dark spots on clean white below; flies early spring",41:"Blue above (males); orange+IRIDESCENT BLUE band on hindwing margin; multibro; buckwheat host",42:"Like Acmon but SINGLE-BROODED; brighter blue males; black inner edge on orange lunules above",43:"Silvery-blue above; gray ground below with round black spots; NO orange band (unlike Acmon)",44:"ENDANGERED; tiny blue; ONLY at LAX dunes area; Seacliff buckwheat host",45:"ENDANGERED; silvery-blue; ONLY Palos Verdes Peninsula; locoweed host",46:"Blue above; SQUARED orange spots in marginal band; buckwheat host",47:"Bright blue; higher mountain elevations; related to Acmon complex",48:"Small; blue male / brown female; orange submarginal spots; dotted-blue group",49:"Dark postmedian forewing spots diagnostic; Reakirt's Blue; irruptive migrant",50:"Yellow-brown; dark spots; ENDEMIC to San Emigdio area; buckwheat host",51:"Males PURPLISH above (unusual for copper); orange zigzag below; dock/sorrel host",52:"Large; males dark PURPLE above; females orange with dark spots; uncommon foothill",53:"Males brilliant iridescent BLUE above; unique among coppers; buckwheat host; ENDANGERED",54:"Orange-brown with white spots; edged-copper pattern; rare vagrant",55:"Tiny; brilliant cerulean blue above; orange aurora below; sonoran influence",56:"Orange with BLACK veins; white dots in black border; ICONIC migrant; milkweed host",57:"Dark MAHOGANY-brown (not orange); white spots; NO black veining; milkweed host",58:"Bright orange above; SILVER-washed underside; long narrow wings; passion vine host",59:"Tawny-orange above; mottled brown-tan below with NO silver; violet host",60:"Orange-black; WHITE bar on forewing; 4 SMALL eyespots on ventral hindwing; cosmopolitan migrant",61:"ORANGE bar on forewing (not white); cobwebbed ventral HW; NO large eyespots below; mallow host",62:"Dark black; bold RED-ORANGE + white bands; strongly banded; nettle host; territorial",63:"2 LARGE eyespots on ventral hindwing; small white dot in orange forewing field; everlasting host",64:"Dark MAROON-purple; cream-yellow marginal border; MOURNING CLOAK; overwintering adult",65:"Brilliant uniform ORANGE; irruptive; sometimes abundant, other years absent; elm host",66:"Dark above; narrow orange submarginal band; California Tortoiseshell; Ceanothus host; irruptive",67:"Ragged irregular wing edges; silver COMMA or L-mark on ventral hindwing; woodland",68:"Like Satyr Comma but DARKER; hoary gray-frosted ventral HW; mountain; Ribes host",69:"Black above; ORANGE band + white spots on forewing; California Sister; live oak host",70:"Black; bold white median band; ORANGE forewing tips; Lorquin's Admiral; willow host",71:"Brown; FOUR large colorful EYESPOTS (2 per wing); multicolored; open weedy areas",72:"Variable mosaic of black+red+yellow; crescents/checks; highly variable; paintbrush host",73:"Red+black checkerboard; very LOCAL colonies; specific hillsides; plantain host",74:"ENDANGERED; bold red-black-white checkerboard; local colonies on specific ridges",75:"Red-orange + black checks; SAGE SCRUB habitat; Indian paintbrush host",76:"Dark ground; pale cream bands; dark checkerspots; paintbrush host; mountain",77:"Orange; complex fine black reticulated pattern; larger than other checkerspots",78:"VERY SMALL (3/4 in.); fine black lines on orange; desert; dwarf plantain host",79:"Small orange-black checks; on thistles in disturbed areas; Mylitta Crescent",80:"Delicate orange-black pattern; desert washes; short flight period",81:"Soft tawny-brown; SINGLE small forewing eyespot; grassland edges; bouncing flight",82:"Brown; TWO prominent forewing eyespots; grass-feeding; Common Wood-Nymph",83:"Smaller than Common; ONE forewing eyespot; mountain meadows above 5000ft",84:"Same as Common Buckeye; dark seasonal/regional form; reddish-brown late season",85:"Pale gray-brown; SMALL eyespots; hackberry specialist; vagrant to LA",86:"Warm brown; dark eyespots on FW; white apical spots; hackberry host; vagrant",87:"Pale straw-cream; bouncing low flight over grasslands; eyespots tiny or absent",88:"EXTIRPATED from LA; unsilvered (tan) spots below; distinguished from other Speyeria",89:"Large fritillary; prominent SILVER spots on green-brown ventral HW; violet host; historical",90:"SMALLEST Speyeria fritillary; single summer brood; silver-spotted below; mountain",91:"Dark brown; more BANDING pattern than Common Buckeye; tropical stray",93:"Males bright ORANGE-GOLD above; dark female with pale spots; common on LAWNS; grass host",94:"Dark brown with orange patches; SHADE-loving; Eufala Skipper; grass host",95:"Dark brown; WHITE hindwing fringe (KEY mark); narrow pointed FW; legume host",96:"Dark brown; white HW fringe BUT with brown bases; GRAY overscaling on FW; OAK host",97:"LARGEST duskywing; heavily MOTTLED FW (tan+dark brown contrast); BROWN fringe; spring; oak host",98:"Very dark males; gray overscaling on FW; Ceanothus host; smaller than Propertius",99:"Gray-brown; pale-tipped fringe (NOT white); smaller than Funereal; legume host",100:"Black-white CHECKERED pattern; hairy body; common in disturbed areas; mallow host",101:"Like Common Checkered but predominantly WHITE; drier habitats; mallow host",102:"Nearly black; TINY white spots; compact body; Common Sootywing; amaranth host",103:"Brown; SALT MARSH specialist; Wandering Skipper; saltgrass host; coastal only",104:"Warm orange-brown; LATE season (Aug-Oct); Woodland Skipper; grass host",105:"Bright orange; EARLIER season than Woodland; smaller; Umber Skipper relative",106:"Variable tawny; JAGGED dark ventral chevrons; Sandhill Skipper",107:"Large orange-gold male; dark brown STIGMA patch on male forewing; grass host; Sachem",108:"Gray-brown; small WHITE forewing spots; Columella/Common Sootywing relative",109:"Orange; SPRING only (one brood); mountain meadow; Juba Skipper",110:"Large orange; GREEN-tinged hindwing below; Rural Skipper; one brood",111:"Dark brown; FAINT translucent white FW spots; fast erratic flight; Northern Cloudywing",112:"Like N. Cloudywing but SMALLER hyaline FW spots; Southern Cloudywing",113:"Large; bold SILVER patch on ventral hindwing; Silver-spotted Skipper; legume host",114:"Iridescent blue-green body; LONG tail streamers on hindwing; legume host",115:"Dark+white checkered; orange below; FALL flier; Erichson's Skipper; desert",116:"Orange-brown with black spots; MESQUITE specialist; desert skipper",117:"HISTORIC; dune habitat form; Los Angeles area; habitat now developed",118:"Tiny dark brown; METALLIC silver lines on ventral HW; Wright's Metalmark",119:"Very small; dark; METALLIC silver lines; Mormon Metalmark; buckwheat host",120:"Tailless; black with rows of yellow spots; tropical vagrant from Mexico",121:"Black; extensive blue on hindwing above (more than Anise); vagrant from Mexico/desert",122:"Heavier green marbling than Sara Orangetip; desert vagrant",123:"Orange; pointed hindwing TAIL; tropical vagrant; Tailed-Orange",124:"Small bright yellow; rounded wings; desert vagrant from Baja; Dainty Sulphur relative",125:"White; orange tips; mountain; larger wingtips than Sara Orangetip",126:"Tiny gray; orange dorsal patches; desert pygmy-blue relative",127:"EXTIRPATED; among smallest blues in N. America; coastal habitat lost",128:"EXTIRPATED from LA; coastal dune blue; closest relative to extinct Xerces Blue",129:"Blue; orange submarginal band; desert vagrant; buckwheat host",130:"Dark above; GREEN mottled below; desert rocky slopes; Nais Metalmark",131:"Reddish-brown; incense cedar specialist; Brown Elfin relative; mountain",132:"Elongated SNOUT-like palps; brown+orange; irruptive migrant; hackberry host",133:"EXTIRPATED; medium fritillary with silver spots; lost from LA mountains",134:"HISTORIC; questionable old LA County records; Great Spangled type",135:"HISTORIC; silver and gold ventral spots; no confirmed LA specimens",136:"Brighter orange than Painted Lady; tropical vagrant; Mexican Fritillary",137:"Pale gray-white above; orange trailing HW edge; tropical vagrant",138:"Blue-black iridescent above; ventral red spots on black; tropical vagrant; rare",141:"WHITER pattern than Common Checkered-Skipper; tropical influence; vagrant",142:"Brown; LONG streamer tails; NOT iridescent (unlike Great Purple)",143:"Orange-brown; POWDERY gray scaling on ventral HW; vagrant from desert",144:"Like Funereal but LACKS white HW fringe; dark throughout; Zarucco relative",145:"EXTIRPATED; lupine specialist; dark with white spots; Persius Duskywing",146:"HISTORIC; massive skipper (2+ in.); yucca borer larva; Giant-Skipper",147:"Dark brown; SALT-SCRUB specialist; coastal sage scrub; very local",148:"Orange; CRISP clean ventral chevrons; foothill chaparral; one brood; Lindsey's Skipper"};
 
 // Lazy-loaded CC-licensed photo from iNaturalist taxa API
 const photoCache = {};
@@ -586,6 +595,7 @@ function ButterflyFieldGuide() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showIntro, setShowIntro] = useState(true);
   const [showStatusLegend, setShowStatusLegend] = useState(false);
+  const [expandedParents, setExpandedParents] = useState(new Set());
   // iNaturalist
   const [inatUser, setInatUser] = useState("");
   const [inatInput, setInatInput] = useState("");
@@ -697,38 +707,55 @@ function ButterflyFieldGuide() {
     setInatMode("done");
   }, [pasteText, inatInput, matchSpecies]);
 
+  // Effective observed: includes parent if any child is observed
+  const effectiveObserved = useMemo(() => {
+    const eff = new Set(observedSpecies);
+    Object.entries(SUBSPECIES).forEach(([parentId, childIds]) => {
+      if (childIds.some(cid => observedSpecies.has(cid))) eff.add(parseInt(parentId));
+    });
+    return eff;
+  }, [observedSpecies]);
+
   const filtered = useMemo(() => {
     let list = BUTTERFLIES.filter(b => {
+      // Hide children from main list (shown inline under parent)
+      if (CHILD_IDS.has(b.id)) return false;
       if (familyFilter !== "all" && b.family !== familyFilter) return false;
       if (statusFilter !== "all" && b.status !== statusFilter) return false;
       if (searchTerm) {
         const s = searchTerm.toLowerCase();
-        return b.name.toLowerCase().includes(s) || b.scientific.toLowerCase().includes(s);
+        // When searching, also match if a child matches
+        const childMatch = (SUBSPECIES[b.id] || []).some(cid => {
+          const child = BUTTERFLIES.find(c => c.id === cid);
+          return child && (child.name.toLowerCase().includes(s) || child.scientific.toLowerCase().includes(s));
+        });
+        return b.name.toLowerCase().includes(s) || b.scientific.toLowerCase().includes(s) || childMatch;
       }
       return true;
     });
-    if (showLifeList && lifeListFilter === "observed") list = list.filter(b => observedSpecies.has(b.id));
-    if (showLifeList && lifeListFilter === "target") list = list.filter(b => !observedSpecies.has(b.id));
+    if (showLifeList && lifeListFilter === "observed") list = list.filter(b => effectiveObserved.has(b.id));
+    if (showLifeList && lifeListFilter === "target") list = list.filter(b => !effectiveObserved.has(b.id));
     return list;
-  }, [familyFilter, statusFilter, searchTerm, showLifeList, lifeListFilter, observedSpecies]);
+  }, [familyFilter, statusFilter, searchTerm, showLifeList, lifeListFilter, effectiveObserved]);
 
   const selectedSpecies = BUTTERFLIES.find(b => b.id === selectedId) || null;
-  const familyCounts = useMemo(() => { const c={}; BUTTERFLIES.forEach(b=>{c[b.family]=(c[b.family]||0)+1}); return c; },[]);
-  const statusCounts = useMemo(() => { const c={}; BUTTERFLIES.forEach(b=>{c[b.status]=(c[b.status]||0)+1}); return c; },[]);
+  const topLevelSpecies = useMemo(() => BUTTERFLIES.filter(b => !CHILD_IDS.has(b.id)), []);
+  const familyCounts = useMemo(() => { const c={}; topLevelSpecies.forEach(b=>{c[b.family]=(c[b.family]||0)+1}); return c; },[topLevelSpecies]);
+  const statusCounts = useMemo(() => { const c={}; topLevelSpecies.forEach(b=>{c[b.status]=(c[b.status]||0)+1}); return c; },[topLevelSpecies]);
 
   const lifeListStats = useMemo(() => {
     if (!showLifeList) return null;
-    const total = BUTTERFLIES.length;
-    const obs = observedSpecies.size;
+    const total = topLevelSpecies.length;
+    const obs = topLevelSpecies.filter(b => effectiveObserved.has(b.id)).length;
     const pct = Math.round((obs/total)*100);
     const byFamily = {};
     Object.keys(FAMILIES).forEach(f => {
-      const fam = BUTTERFLIES.filter(b=>b.family===f);
-      const famObs = fam.filter(b=>observedSpecies.has(b.id)).length;
+      const fam = topLevelSpecies.filter(b=>b.family===f);
+      const famObs = fam.filter(b=>effectiveObserved.has(b.id)).length;
       byFamily[f] = { total:fam.length, observed:famObs };
     });
     return { total, obs, pct, byFamily, extras: inatExtraSpecies.length };
-  }, [showLifeList, observedSpecies, inatExtraSpecies]);
+  }, [showLifeList, effectiveObserved, inatExtraSpecies, topLevelSpecies]);
 
   if (showIntro) {
     return (
@@ -738,10 +765,10 @@ function ButterflyFieldGuide() {
           <h1 style={{ fontSize:42, fontWeight:700, color:"#2a2a1e", margin:0, lineHeight:1.1 }}>Butterflies of<br/>Los Angeles County</h1>
           <div style={{ width:60, height:2, background:"#BFA46E", margin:"20px auto" }} />
           <p style={{ fontSize:16, color:"#5a5540", lineHeight:1.7, maxWidth:480, margin:"0 auto 8px" }}>
-            An interactive field guide to {BUTTERFLIES.length} species documented across the county's remarkable habitats — from coastal dunes and urban gardens to mountain chaparral and high-desert scrub.
+            An interactive field guide to {topLevelSpecies.length} species documented across the county's remarkable habitats — from coastal dunes and urban gardens to mountain chaparral and high-desert scrub.
           </p>
           <p style={{ fontSize:13, color:"#8a8570", lineHeight:1.6, maxWidth:480, margin:"0 auto 12px" }}>
-            The comprehensive county checklist (~144 species per Arroyos & Foothills Conservancy) includes subspecific splits and single-record vagrants. This guide covers {BUTTERFLIES.length} species at the species level: all regularly occurring taxa, key rarities, vagrant/irregular visitors, and extirpated or historic-only records for full ecological context.
+            The comprehensive county checklist (~144 species per Arroyos & Foothills Conservancy) includes subspecific splits and single-record vagrants. This guide covers {topLevelSpecies.length} species at the species level: all regularly occurring taxa, key rarities, vagrant/irregular visitors, and extirpated or historic-only records for full ecological context.
           </p>
           <p style={{ fontSize:13, color:"#6a7a6a", lineHeight:1.6, maxWidth:460, margin:"0 auto 24px", fontWeight:600 }}>
             NEW: Connect your iNaturalist account to build a personal life list with target species for your next field trip.
@@ -763,12 +790,12 @@ function ButterflyFieldGuide() {
   return (
     <div style={{ minHeight:"100vh", background:"#f5f0e6", fontFamily:"'EB Garamond',Georgia,serif" }}>
       {/* Header */}
-      <div style={{ background:"linear-gradient(135deg,#2a2a1e,#3a3a2e)", padding:"12px 20px", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:8 }}>
+      <div style={{ background:"linear-gradient(135deg,#2a2a1e,#3a3a2e)", padding:"12px 20px", paddingTop:"calc(12px + env(safe-area-inset-top, 0px))", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:8 }}>
         <div>
           <div style={{ fontSize:9, textTransform:"uppercase", letterSpacing:"0.25em", color:"#BFA46E", marginBottom:1 }}>Field Guide</div>
           <div style={{ fontSize:20, fontWeight:700, color:"#f5f0e6" }}>Butterflies of Los Angeles County</div>
         </div>
-        <div style={{ fontSize:12, color:"#a09880" }}>{BUTTERFLIES.length} species · 6 families</div>
+        <div style={{ fontSize:12, color:"#a09880" }}>{topLevelSpecies.length} species · 6 families</div>
       </div>
 
       {/* iNaturalist Bar */}
@@ -818,7 +845,7 @@ function ButterflyFieldGuide() {
       <div style={{ padding:"8px 20px", background:"#eee8d8", borderBottom:"1px solid #ddd5c2", display:"flex", gap:10, flexWrap:"wrap", alignItems:"center" }}>
         <input type="text" placeholder="Search species..." value={searchTerm} onChange={e=>setSearchTerm(e.target.value)} style={{ padding:"5px 12px", borderRadius:20, border:"1px solid #ccc5b0", fontSize:12, fontFamily:"'EB Garamond',Georgia,serif", background:"#fff", outline:"none", width:160 }} />
         <select value={familyFilter} onChange={e=>setFamilyFilter(e.target.value)} style={{ padding:"5px 10px", borderRadius:20, border:"1px solid #ccc5b0", fontSize:12, fontFamily:"'EB Garamond',Georgia,serif", background:"#fff", cursor:"pointer" }}>
-          <option value="all">All Families ({BUTTERFLIES.length})</option>
+          <option value="all">All Families ({topLevelSpecies.length})</option>
           {Object.entries(FAMILIES).map(([k,f])=>(<option key={k} value={k}>{f.common} ({familyCounts[k]||0})</option>))}
         </select>
         <select value={statusFilter} onChange={e=>setStatusFilter(e.target.value)} style={{ padding:"5px 10px", borderRadius:20, border:"1px solid #ccc5b0", fontSize:12, fontFamily:"'EB Garamond',Georgia,serif", background:"#fff", cursor:"pointer" }}>
@@ -827,9 +854,9 @@ function ButterflyFieldGuide() {
         </select>
         {showLifeList && (
           <select value={lifeListFilter} onChange={e=>setLifeListFilter(e.target.value)} style={{ padding:"5px 10px", borderRadius:20, border:"1px solid #4A7C59", fontSize:12, fontFamily:"'EB Garamond',Georgia,serif", background:"#e8f0e8", cursor:"pointer", fontWeight:600, color:"#2d5a3a" }}>
-            <option value="all">All ({BUTTERFLIES.length})</option>
-            <option value="observed">✓ Observed ({observedSpecies.size})</option>
-            <option value="target">◎ Targets ({BUTTERFLIES.length - observedSpecies.size})</option>
+            <option value="all">All ({topLevelSpecies.length})</option>
+            <option value="observed">✓ Observed ({effectiveObserved.size})</option>
+            <option value="target">◎ Targets ({topLevelSpecies.length - effectiveObserved.size})</option>
           </select>
         )}
         <span style={{ fontSize:11, color:"#8a8570", marginLeft:"auto" }}>Showing {filtered.length}</span>
@@ -874,31 +901,79 @@ function ButterflyFieldGuide() {
             <div style={{ padding:20, textAlign:"center", color:"#a09880", fontStyle:"italic" }}>No species match</div>
           ) : filtered.map(sp => {
             const fam = FAMILIES[sp.family];
-            const isObs = observedSpecies.has(sp.id);
+            const isObs = effectiveObserved.has(sp.id);
             const isSel = selectedId === sp.id;
             const isGhost = sp.status === "extirpated" || sp.status === "historical";
+            const children = SUBSPECIES[sp.id] || [];
+            const hasChildren = children.length > 0;
+            const isExpanded = expandedParents.has(sp.id);
             return (
-              <div key={sp.id} onClick={()=>handleSelectSpecies(sp.id)} style={{
-                cursor:"pointer",
-                border: `${isSel ? 2.5 : 1.5}px solid ${isGhost ? "#ccc5b5" : fam.color}`,
-                borderRadius:6, padding:"10px 12px", marginBottom:8,
-                backgroundColor: isObs && showLifeList ? "#f0f8f0" : isSel ? "#fdfbf5" : isGhost ? "#f8f6f2" : "#fff",
-                opacity: isGhost ? 0.8 : 1,
-                transition:"all 0.15s", boxShadow:isSel?`0 2px 12px ${fam.color}30`:"none",
-              }}>
-                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:6 }}>
-                  <div style={{ flex:1 }}>
-                    <div style={{ fontSize:15, fontWeight:700, color: isGhost ? "#7a7a6e" : "#2a2a1e", lineHeight:1.2 }}>{isGhost ? "† " : ""}{sp.name}</div>
-                    <div style={{ fontSize:12, fontStyle:"italic", color:"#7a7560", marginTop:1 }}>{sp.scientific}</div>
+              <div key={sp.id}>
+                <div onClick={()=>{
+                  handleSelectSpecies(sp.id);
+                  if (hasChildren) setExpandedParents(prev => {
+                    const next = new Set(prev);
+                    if (next.has(sp.id)) next.delete(sp.id); else next.add(sp.id);
+                    return next;
+                  });
+                }} style={{
+                  cursor:"pointer",
+                  border: `${isSel ? 2.5 : 1.5}px solid ${isGhost ? "#ccc5b5" : fam.color}`,
+                  borderRadius: hasChildren && isExpanded ? "6px 6px 0 0" : 6, padding:"10px 12px", marginBottom: hasChildren && isExpanded ? 0 : 8,
+                  backgroundColor: isObs && showLifeList ? "#f0f8f0" : isSel ? "#fdfbf5" : isGhost ? "#f8f6f2" : "#fff",
+                  opacity: isGhost ? 0.8 : 1,
+                  transition:"all 0.15s", boxShadow:isSel?`0 2px 12px ${fam.color}30`:"none",
+                }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:6 }}>
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontSize:15, fontWeight:700, color: isGhost ? "#7a7a6e" : "#2a2a1e", lineHeight:1.2 }}>{isGhost ? "† " : ""}{sp.name}</div>
+                      <div style={{ fontSize:12, fontStyle:"italic", color:"#7a7560", marginTop:1 }}>{sp.scientific}</div>
+                    </div>
+                    <div style={{ display:"flex", flexDirection:"column", gap:3, alignItems:"flex-end" }}>
+                      <StatusBadge status={sp.status} onClick={()=>setShowStatusLegend(true)} />
+                      {showLifeList && <LifeListBadge observed={isObs} />}
+                    </div>
                   </div>
-                  <div style={{ display:"flex", flexDirection:"column", gap:3, alignItems:"flex-end" }}>
-                    <StatusBadge status={sp.status} onClick={()=>setShowStatusLegend(true)} />
-                    {showLifeList && <LifeListBadge observed={isObs} />}
+                  <div style={{ display:"flex", gap:12, marginTop:5, fontSize:11, color:"#6a6550", justifyContent:"space-between" }}>
+                    <div><span>✦ {sp.wingspan}</span><span style={{ marginLeft:12 }}>⟡ {sp.flight}</span></div>
+                    {hasChildren && (
+                      <span style={{ fontSize:10, color:"#9a9280", fontWeight:600 }}>
+                        {isExpanded ? "▾" : "▸"} {children.length} subspecies
+                      </span>
+                    )}
                   </div>
                 </div>
-                <div style={{ display:"flex", gap:12, marginTop:5, fontSize:11, color:"#6a6550" }}>
-                  <span>✦ {sp.wingspan}</span><span>⟡ {sp.flight}</span>
-                </div>
+                {/* Expanded child subspecies cards */}
+                {hasChildren && isExpanded && children.map(cid => {
+                  const child = BUTTERFLIES.find(b => b.id === cid);
+                  if (!child) return null;
+                  const cFam = FAMILIES[child.family];
+                  const cObs = observedSpecies.has(child.id);
+                  const cSel = selectedId === child.id;
+                  const cGhost = child.status === "extirpated" || child.status === "historical";
+                  return (
+                    <div key={child.id} onClick={(e)=>{e.stopPropagation(); handleSelectSpecies(child.id);}} style={{
+                      cursor:"pointer", marginLeft:16, borderLeft:`2px solid ${cFam.color}60`,
+                      border: `${cSel ? 2 : 1}px solid ${cGhost ? "#ccc5b5" : cFam.color}80`,
+                      borderRadius:"0 0 6px 6px", padding:"8px 12px", marginBottom:8,
+                      backgroundColor: cObs && showLifeList ? "#edf5ed" : cSel ? "#fdfbf5" : cGhost ? "#f5f3ef" : "#f8f6f0",
+                      opacity: cGhost ? 0.75 : 0.95,
+                      transition:"all 0.15s", boxShadow:cSel?`0 1px 8px ${cFam.color}20`:"none",
+                    }}>
+                      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", gap:6 }}>
+                        <div style={{ flex:1 }}>
+                          <div style={{ fontSize:10, textTransform:"uppercase", letterSpacing:"0.08em", color:"#a09880", fontWeight:600, marginBottom:1 }}>Subspecies</div>
+                          <div style={{ fontSize:14, fontWeight:700, color: cGhost ? "#7a7a6e" : "#2a2a1e", lineHeight:1.2 }}>{cGhost ? "† " : ""}{child.name}</div>
+                          <div style={{ fontSize:11, fontStyle:"italic", color:"#7a7560", marginTop:1 }}>{child.scientific}</div>
+                        </div>
+                        <div style={{ display:"flex", flexDirection:"column", gap:3, alignItems:"flex-end" }}>
+                          <StatusBadge status={child.status} onClick={()=>setShowStatusLegend(true)} />
+                          {showLifeList && <LifeListBadge observed={cObs} />}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             );
           })}
@@ -933,7 +1008,7 @@ function ButterflyFieldGuide() {
             <div style={{ padding:40, textAlign:"center", color:"#b0a890", fontSize:17, fontStyle:"italic" }}>Select a species to view details and range map</div>
           ) : (() => {
             const fam = FAMILIES[selectedSpecies.family];
-            const isObs = observedSpecies.has(selectedSpecies.id);
+            const isObs = effectiveObserved.has(selectedSpecies.id);
             return (
               <div>
                 <div style={{ background:`linear-gradient(135deg,${fam.color}22,${fam.color}08)`, borderBottom:`2px solid ${fam.color}44`, padding:"16px 20px", borderRadius:"6px 6px 0 0" }}>
@@ -1050,7 +1125,7 @@ function ButterflyFieldGuide() {
         </div>
       )}
 
-      <div style={{ padding:"12px 20px", background:"#eee8d8", borderTop:"1px solid #ddd5c2", fontSize:10, color:"#a09880", textAlign:"center" }}>
+      <div style={{ padding:"12px 20px", paddingBottom:"calc(12px + env(safe-area-inset-bottom, 0px))", background:"#eee8d8", borderTop:"1px solid #ddd5c2", fontSize:10, color:"#a09880", textAlign:"center" }}>
         <div style={{ fontStyle:"normal", fontWeight:600, fontSize:12, color:"#6a6550", marginBottom:4 }}>Field guide by Rhys Marsh</div>
         <div style={{ fontStyle:"italic" }}>
           Data: BAMONA, NHM of LA County, USFWS, iNaturalist, socalbutterflies.com, Emmel & Emmel (1973), Mattoni (1990), Davenport (2018). Range zones approximate. 
